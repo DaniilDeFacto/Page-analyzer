@@ -4,12 +4,13 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 plugins {
     application
     jacoco
+    checkstyle
     id("java")
-    id("checkstyle")
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 application {
-    mainClass.set("hexlet.code.HelloWorld")
+    mainClass = "hexlet.code.App"
 }
 
 group = "hexlet.code"
@@ -20,6 +21,11 @@ repositories {
 }
 
 dependencies {
+    implementation("org.slf4j:slf4j-simple:2.0.9")
+    implementation("io.javalin:javalin:5.6.2")
+    implementation("io.javalin:javalin-bundle:5.6.2")
+    implementation("io.javalin:javalin-rendering:5.6.2")
+    implementation("org.projectlombok:lombok:1.18.28")
     testImplementation("org.assertj:assertj-core:3.24.2")
     testImplementation(platform("org.junit:junit-bom:5.9.2"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
