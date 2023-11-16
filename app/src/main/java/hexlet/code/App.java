@@ -8,6 +8,7 @@ public class App {
 
     public static Javalin getApp() {
         var app = Javalin.create(config -> config.plugins.enableDevLogging());
+        log.info("Test logger");
         app.get("/", ctx -> ctx.result("Hello World"));
         return app;
     }
