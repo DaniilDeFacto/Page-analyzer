@@ -4,9 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN ./app/gradlew --no-daemon dependencies
-
-RUN ./app/gradlew --no-daemon build
+RUN gradle installDist
 
 ENV JAVA_OPTS "-Xmx512M -Xms512M"
 
