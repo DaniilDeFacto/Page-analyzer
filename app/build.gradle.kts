@@ -21,11 +21,15 @@ repositories {
 }
 
 dependencies {
+    implementation("com.h2database:h2:2.2.220")
+    implementation("com.zaxxer:HikariCP:5.0.1")
     implementation("org.slf4j:slf4j-simple:2.0.9")
     implementation("io.javalin:javalin:5.6.2")
     implementation("io.javalin:javalin-bundle:5.6.2")
     implementation("io.javalin:javalin-rendering:5.6.2")
-    implementation("org.projectlombok:lombok:1.18.28")
+    implementation("org.projectlombok:lombok:1.18.30")
+    compileOnly ("org.projectlombok:lombok:1.18.30")
+    annotationProcessor ("org.projectlombok:lombok:1.18.30")
     testImplementation("org.assertj:assertj-core:3.24.2")
     testImplementation(platform("org.junit:junit-bom:5.9.2"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
