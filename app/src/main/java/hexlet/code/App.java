@@ -1,18 +1,41 @@
 package hexlet.code;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import hexlet.code.repository.BaseRepository;
 import io.javalin.Javalin;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.sql.SQLException;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class App {
 
-    public static Javalin getApp() {
+    public static Javalin getApp() throws IOException, SQLException {
+        var hikariConfig = new HikariConfig();
+        hikariConfig.setJdbcUrl("jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
+
+        var dataSource = new HikariDataSource(hikariConfig);
+        var url = App.class.getClassLoader().getResource("schema.sql");
+        var file = new File(url.getFile());
+        var sql = Files.lines(file.toPath())
+                .collect(Collectors.joining("\n"));
+
+        log.info(sql);
+        try (var connection = dataSource.getConnection();
+             var statement = connection.createStatement()) {
+            statement.execute(sql);
+        }
+        BaseRepository.dataSource = dataSource;
+
         var app = Javalin.create(config -> config.plugins.enableDevLogging());
-        Logger logger = LoggerFactory.getLogger(App.class);
-        logger.info("Test logger");
+
         app.get("/", ctx -> ctx.result("Hello World"));
+
         return app;
     }
 
@@ -21,7 +44,7 @@ public class App {
         return Integer.parseInt(port);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException, IOException {
         var app = getApp();
         app.start(getPort());
     }
