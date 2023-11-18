@@ -7,17 +7,18 @@ import io.javalin.Javalin;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
-import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
 
 @Slf4j
 public class App {
 
-    public static Javalin getApp() throws IOException, SQLException {
+    public static Javalin getApp() throws SQLException {
         var jdbcUrl = System.getenv("JDBC_DATABASE_URL");
+        if (jdbcUrl == null) {
+            jdbcUrl = "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;";
+        }
         var hikariConfig = new HikariConfig();
-//        hikariConfig.setJdbcUrl("jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
         hikariConfig.setJdbcUrl(jdbcUrl);
 
         var dataSource = new HikariDataSource(hikariConfig);
@@ -46,7 +47,7 @@ public class App {
         InputStream is = getResourceFileAsInputStream(fileName);
         if (is != null) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            return (String) reader.lines().collect(Collectors.joining(System.lineSeparator()));
+            return reader.lines().collect(Collectors.joining(System.lineSeparator()));
         } else {
             throw new RuntimeException("resource not found");
         }
@@ -57,7 +58,7 @@ public class App {
         return classLoader.getResourceAsStream(fileName);
     }
 
-    public static void main(String[] args) throws SQLException, IOException {
+    public static void main(String[] args) throws SQLException {
         var app = getApp();
         app.start(getPort());
     }
