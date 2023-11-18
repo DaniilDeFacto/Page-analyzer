@@ -16,8 +16,15 @@ import java.util.stream.Collectors;
 public class App {
 
     public static Javalin getApp() throws IOException, SQLException {
+        var jdbcUrl = System.getenv("JDBC_DATABASE_URL");
+        var userName = System.getenv("JDBC_DATABASE_USERNAME");
+        var password = System.getenv("JDBC_DATABASE_PASSWORD");
+
         var hikariConfig = new HikariConfig();
-        hikariConfig.setJdbcUrl("jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
+//        hikariConfig.setJdbcUrl("jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
+        hikariConfig.setJdbcUrl(jdbcUrl);
+        hikariConfig.setUsername(userName);
+        hikariConfig.setPassword(password);
 
         var dataSource = new HikariDataSource(hikariConfig);
         var url = App.class.getClassLoader().getResource("schema.sql");
