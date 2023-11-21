@@ -21,6 +21,9 @@ repositories {
 }
 
 dependencies {
+    implementation("com.konghq:unirest-objectmapper-jackson:4.2.0")
+    compileOnly("com.konghq:unirest-java-core:4.2.0")
+    implementation("com.konghq:unirest-java-bom:4.2.0")
     implementation("gg.jte:jte:3.0.1")
     implementation("org.postgresql:postgresql:42.5.4")
     implementation("com.h2database:h2:2.2.220")
