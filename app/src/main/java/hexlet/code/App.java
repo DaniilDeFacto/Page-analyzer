@@ -5,6 +5,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import gg.jte.ContentType;
 import gg.jte.TemplateEngine;
 import gg.jte.resolve.ResourceCodeResolver;
+import hexlet.code.controller.UrlsController;
 import hexlet.code.repository.BaseRepository;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;
@@ -41,7 +42,10 @@ public class App {
 
         JavalinJte.init(createTemplateEngine());
 
-        app.get("/", ctx -> ctx.render("main.jte"));
+        app.get(NamedRoutes.mainPath(), UrlsController::build);
+        app.get(NamedRoutes.urlsPath(), UrlsController::index);
+        app.get(NamedRoutes.urlPath("{id}"), UrlsController::show);
+        app.post(NamedRoutes.urlsPath(), UrlsController::create);
 
         return app;
     }
@@ -57,7 +61,7 @@ public class App {
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
             return reader.lines().collect(Collectors.joining(System.lineSeparator()));
         } else {
-            throw new RuntimeException("resource not found");
+            throw new RuntimeException("Resource not found");
         }
     }
 
@@ -69,8 +73,7 @@ public class App {
     private static TemplateEngine createTemplateEngine() {
         ClassLoader classLoader = App.class.getClassLoader();
         ResourceCodeResolver codeResolver = new ResourceCodeResolver("templates", classLoader);
-        TemplateEngine templateEngine = TemplateEngine.create(codeResolver, ContentType.Html);
-        return templateEngine;
+        return TemplateEngine.create(codeResolver, ContentType.Html);
     }
 
     public static void main(String[] args) throws SQLException {

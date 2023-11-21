@@ -1,11 +1,27 @@
 package gg.jte.generated.ondemand;
+import hexlet.code.NamedRoutes;
+import hexlet.code.dto.BasePage;
 public final class JtemainGenerated {
 	public static final String JTE_NAME = "main.jte";
-	public static final int[] JTE_LINE_INFO = {38,38,38,38,38,38};
-	public static void render(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor) {
-		jteOutput.writeContent("<!doctype html>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n        <title>Анализатор страниц</title>\n        <link rel=\"stylesheet\"\n              href=\"https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css\"\n              integrity=\"sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm\"\n              crossorigin=\"anonymous\">\n    </head>\n    <body class=\"d-flex flex-column min-vh-100\">\n        <nav class=\"navbar navbar-expand-lg navbar-dark bg-dark\">\n            <div class=\"container-fluid\">\n                <a class=\"navbar-brand\" href=\"/\">Главная</a>\n            </div>\n        </nav>\n        <main class=\"flex-grow-1\">\n            <section>\n                <div class=\"container-fluid bg-dark p-5\">\n                    <div class=\"row\">\n                        <div class=\"col-md-10 col-lg-8 mx-auto text-white\">\n                            <h1 class=\"display-3 mb-0\">Анализатор страниц</h1>\n                            <p class=\"lead\">Бесплатно проверяйте сайты на SEO пригодность</p>\n                            <p class=\"mt-2 mb-0 text-muted\">Пример: https://www.example.com</p>\n                        </div>\n                    </div>\n                </div>\n            </section>\n        </main>\n        <footer class=\"footer border-top py-3 mt-5 bg-light\">\n            <div class=\"container-xl\">\n                <div class=\"text-center\">\n                    created by <a href=\"https://ru.hexlet.io/\">Hexlet</a>\n                </div>\n            </div>\n        </footer>\n    </body>\n</html>");
+	public static final int[] JTE_LINE_INFO = {0,0,1,2,2,2,4,4,7,7,13,13,13,13,13,13,13,13,32,32,32};
+	public static void render(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, BasePage page) {
+		jteOutput.writeContent("\n");
+		gg.jte.generated.ondemand.layout.JtepageGenerated.render(jteOutput, jteHtmlInterceptor, new gg.jte.html.HtmlContent() {
+			public void writeTo(gg.jte.html.HtmlTemplateOutput jteOutput) {
+				jteOutput.writeContent("\n        <div class=\"container-fluid bg-dark p-5\">\n            <div class=\"row\">\n                <div class=\"col-md-10 col-lg-8 mx-auto text-white\">\n                    <h1 class=\"display-3 mb-0\">Анализатор страниц</h1>\n                    <p class=\"lead\">Бесплатно проверяйте сайты на SEO пригодность</p>\n                    <form");
+				if (gg.jte.runtime.TemplateUtils.isAttributeRendered(NamedRoutes.urlsPath())) {
+					jteOutput.writeContent(" action=\"");
+					jteOutput.setContext("form", "action");
+					jteOutput.writeUserContent(NamedRoutes.urlsPath());
+					jteOutput.setContext("form", null);
+					jteOutput.writeContent("\"");
+				}
+				jteOutput.writeContent(" method=\"post\" class=\"rss-form text-body\">\n                        <div class=\"row\">\n                            <div class=\"col\">\n                                <div class=\"form-floating\">\n                                    <input id=\"url-input\" autofocus type=\"text\" required name=\"name\"\n                                           aria-label=\"url\" class=\"form-control w-100\" placeholder=\"cсылка\"\n                                           autocomplete=\"off\">\n                                    <label for=\"url-input\">Ссылка</label>\n                                </div>\n                            </div>\n                            <div class=\"col-auto\">\n                                <button type=\"submit\" class=\"h-100 btn btn-lg btn-primary px-sm-5\">Проверить</button>\n                            </div>\n                        </div>\n                    </form>\n                    <p class=\"mt-2 mb-0 text-muted\">Пример: https://www.example.com</p>\n                </div>\n            </div>\n        </div>\n    ");
+			}
+		}, page);
 	}
 	public static void renderMap(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, java.util.Map<String, Object> params) {
-		render(jteOutput, jteHtmlInterceptor);
+		BasePage page = (BasePage)params.get("page");
+		render(jteOutput, jteHtmlInterceptor, page);
 	}
 }
