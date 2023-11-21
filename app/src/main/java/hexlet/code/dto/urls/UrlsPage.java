@@ -10,5 +10,5 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 public class UrlsPage extends BasePage {
-    private List<Url> Urls;
+    private List<Url> urls;
 }
