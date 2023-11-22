@@ -3,7 +3,7 @@ import hexlet.code.dto.urls.UrlsPage;
 import hexlet.code.NamedRoutes;
 public final class JteindexGenerated {
 	public static final String JTE_NAME = "urls/index.jte";
-	public static final int[] JTE_LINE_INFO = {0,0,1,2,2,2,4,4,7,7,19,19,21,21,24,24,24,27,27,27,27,27,27,27,27,27,27,27,34,34,36,36,40,40,40};
+	public static final int[] JTE_LINE_INFO = {0,0,1,2,2,2,4,4,7,7,19,19,21,21,24,24,24,27,27,27,27,27,27,27,27,27,27,27,30,30,31,31,31,32,32,35,35,36,36,36,37,37,40,40,42,42,46,46,46};
 	public static void render(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, UrlsPage page) {
 		jteOutput.writeContent("\n");
 		gg.jte.generated.ondemand.layout.JtepageGenerated.render(jteOutput, jteHtmlInterceptor, new gg.jte.html.HtmlContent() {
@@ -26,7 +26,21 @@ public final class JteindexGenerated {
 						jteOutput.writeContent(">");
 						jteOutput.setContext("a", null);
 						jteOutput.writeUserContent(url.getName());
-						jteOutput.writeContent("</a>\n                                </td>\n                                <td>\n                                </td>\n                                <td>\n                                </td>\n                            </tr>\n                        ");
+						jteOutput.writeContent("</a>\n                                </td>\n                                <td>\n                                    ");
+						if (url.getLastCheck() != null) {
+							jteOutput.writeContent("\n                                        ");
+							jteOutput.setContext("td", null);
+							jteOutput.writeUserContent(url.getLastCheck().getCreatedAt().toString());
+							jteOutput.writeContent("\n                                    ");
+						}
+						jteOutput.writeContent("\n                                </td>\n                                <td>\n                                    ");
+						if (url.getLastCheck() != null) {
+							jteOutput.writeContent("\n                                        ");
+							jteOutput.setContext("td", null);
+							jteOutput.writeUserContent(url.getLastCheck().getStatusCode());
+							jteOutput.writeContent("\n                                    ");
+						}
+						jteOutput.writeContent("\n                                </td>\n                            </tr>\n                        ");
 					}
 					jteOutput.writeContent("\n                    </tbody>\n                ");
 				}

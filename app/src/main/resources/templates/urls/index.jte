@@ -27,8 +27,14 @@
                                     <a href="${NamedRoutes.urlPath(url.getId())}">${url.getName()}</a>
                                 </td>
                                 <td>
+                                    @if(url.getLastCheck() != null)
+                                        ${url.getLastCheck().getCreatedAt().toString()}
+                                    @endif
                                 </td>
                                 <td>
+                                    @if(url.getLastCheck() != null)
+                                        ${url.getLastCheck().getStatusCode()}
+                                    @endif
                                 </td>
                             </tr>
                         @endfor

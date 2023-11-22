@@ -1,25 +1,23 @@
 package hexlet.code.repository;
 
-import hexlet.code.model.Url;
 import hexlet.code.model.UrlCheck;
 
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-public class UrlCheckRepository extends BaseRepository{
+public class UrlCheckRepository extends BaseRepository {
     public static void save(UrlCheck urlCheck) throws SQLException {
-        var sql = "INSERT INTO url_checks (status_code, title, h1, description, url_id, created_at)" +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+        var sql = "INSERT INTO url_checks (status_code, title, h1, description, url_id, created_at)"
+                + "VALUES (?, ?, ?, ?, ?, ?)";
         try (var conn = dataSource.getConnection();
              var preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, urlCheck.getStatusCode());
             preparedStatement.setString(2, urlCheck.getTitle());
             preparedStatement.setString(3, urlCheck.getH1());
             preparedStatement.setString(4, urlCheck.getDescription());
-            preparedStatement.setLong(1, urlCheck.getUrlId());
+            preparedStatement.setLong(5, urlCheck.getUrlId());
             preparedStatement.setTimestamp(6, urlCheck.getCreatedAt());
             preparedStatement.executeUpdate();
             var generatedKeys = preparedStatement.getGeneratedKeys();
