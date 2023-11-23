@@ -14,7 +14,7 @@
                         <div class="row">
                             <div class="col">
                                 <div class="form-floating">
-                                    <input id="url-input" autofocus type="text" required name="name"
+                                    <input id="url-input" autofocus type="text" required name="url"
                                            aria-label="url" class="form-control w-100" placeholder="cсылка"
                                            autocomplete="off">
                                     <label for="url-input">Ссылка</label>

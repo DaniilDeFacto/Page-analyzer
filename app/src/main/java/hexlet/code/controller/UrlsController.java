@@ -49,7 +49,7 @@ public class UrlsController {
     }
 
     public static void create(Context ctx) throws SQLException {
-        var inputName = ctx.formParamAsClass("name", String.class).getOrDefault(null);
+        var inputName = ctx.formParamAsClass("url", String.class).getOrDefault(null);
         URL inputUrl = null;
         try {
             inputUrl = new URL(inputName);

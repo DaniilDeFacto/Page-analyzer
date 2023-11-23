@@ -49,7 +49,7 @@ public final class AppTest {
     @Test
     public void testCreateUrl() {
         JavalinTest.test(app, ((server, client) -> {
-            String requestBody = "name=" + fistCorrectUrl;
+            String requestBody = "url=" + fistCorrectUrl;
             var response = client.post("/urls", requestBody);
             assertThat(response.code()).isEqualTo(200);
             assertThat(response.body().string()).contains("https://ru.hexlet.io");
@@ -61,7 +61,7 @@ public final class AppTest {
     @Test
     public void testCreateIncorrectUrl() {
         JavalinTest.test(app, ((server, client) -> {
-            String requestBody = "name=" + incorrectUrl;
+            String requestBody = "url=" + incorrectUrl;
             var response = client.post("/urls", requestBody);
             assertThat(response.code()).isEqualTo(200);
             assertThat(UrlRepository.getUrls().size()).isEqualTo(0);
