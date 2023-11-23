@@ -28,7 +28,7 @@
                                 </td>
                                 <td>
                                     @if(url.getLastCheck() != null)
-                                        ${url.getLastCheck().getCreatedAt().toString()}
+                                        ${url.getLastCheck().getCreatedAtToString()}
                                     @endif
                                 </td>
                                 <td>

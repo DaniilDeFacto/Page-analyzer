@@ -20,7 +20,7 @@ public class UrlRepository extends BaseRepository {
             if (generatedKeys.next()) {
                 url.setId(generatedKeys.getLong(1));
             } else {
-                throw new SQLException("DB have not returned an id after saving an entity");
+                throw new SQLException("Database didn't return id after saving url");
             }
         }
     }
@@ -42,7 +42,7 @@ public class UrlRepository extends BaseRepository {
         }
     }
 
-    public static List<Url> getEntities() throws SQLException {
+    public static List<Url> getUrls() throws SQLException {
         var sql = "SELECT * FROM urls";
         try (var conn = dataSource.getConnection();
              var stmt = conn.prepareStatement(sql)) {

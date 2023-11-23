@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Getter
@@ -23,10 +24,15 @@ public final class Url {
     public UrlCheck getLastCheck() {
         List<UrlCheck> checks;
         try {
-            checks = UrlCheckRepository.find(id);
+            checks = UrlCheckRepository.getUrlChecks(id);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return checks.isEmpty() ? null : checks.get(checks.size() - 1);
+    }
+
+    public String getCreatedAtToString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        return formatter.format(createdAt.toLocalDateTime());
     }
 }

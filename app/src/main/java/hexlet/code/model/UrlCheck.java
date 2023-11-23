@@ -4,10 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
-public class UrlCheck {
+public final class UrlCheck {
     private Long id;
     private int statusCode;
     private String title;
@@ -23,5 +24,10 @@ public class UrlCheck {
         this.description = description;
         this.urlId = urlId;
         this.createdAt = createdAt;
+    }
+
+    public String getCreatedAtToString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        return formatter.format(createdAt.toLocalDateTime());
     }
 }

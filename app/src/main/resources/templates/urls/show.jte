@@ -19,7 +19,7 @@
                     </tr>
                     <tr>
                         <td>Дата создания</td>
-                        <td>${String.valueOf(page.getUrl().getCreatedAt())}</td>
+                        <td>${page.getUrl().getCreatedAtToString()}</td>
                     </tr>
                 </tbody>
             </table>
@@ -56,7 +56,7 @@
                                     ${urlCheck.getDescription()}
                                 </td>
                                 <td>
-                                    ${String.valueOf(urlCheck.getCreatedAt())}
+                                    ${urlCheck.getCreatedAtToString()}
                                 </td>
                             </tr>
                         @endfor

@@ -21,6 +21,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public final class AppTest {
     private static Javalin app;
     private MockWebServer mockServer;
+    private final String fistCorrectUrl = "https://ru.hexlet.io/programs/java";
+    private final String secondCorrectUrl = "https://github.com/DaniilDeFacto/java-project-72";
+    private final String incorrectUrl = "https//ru.hexlet.io/programs/java";
 
     @BeforeEach
     public void beforeEach() throws SQLException, IOException {
@@ -44,30 +47,49 @@ public final class AppTest {
     }
 
     @Test
-    public void testUrlsPage() {
-        JavalinTest.test(app, (server, client) -> {
-            var response = client.get("/urls");
-            assertThat(response.code()).isEqualTo(200);
-        });
-    }
-
-    @Test
     public void testCreateUrl() {
-        JavalinTest.test(app, (server, client) -> {
-            var requestBody = "name=https://some-domain.org/example/path";
+        JavalinTest.test(app, ((server, client) -> {
+            String requestBody = "name=" + fistCorrectUrl;
             var response = client.post("/urls", requestBody);
             assertThat(response.code()).isEqualTo(200);
-            assertThat(response.body().string()).contains("https://some-domain.org");
-        });
+            assertThat(response.body().string()).contains("https://ru.hexlet.io");
+            assertThat(UrlRepository.getUrls().size()).isEqualTo(1);
+            assertThat(UrlRepository.getUrls().get(0).getName()).isEqualTo("https://ru.hexlet.io");
+        }));
     }
 
     @Test
-    public void testUrlPage() throws SQLException {
-        var url = new Url("https://some-domain.org", new Timestamp(System.currentTimeMillis()));
-        UrlRepository.save(url);
-        JavalinTest.test(app, (server, client) -> {
-            var response = client.get("/urls/" + url.getId());
+    public void testCreateIncorrectUrl() {
+        JavalinTest.test(app, ((server, client) -> {
+            String requestBody = "name=" + incorrectUrl;
+            var response = client.post("/urls", requestBody);
             assertThat(response.code()).isEqualTo(200);
+            assertThat(UrlRepository.getUrls().size()).isEqualTo(0);
+        }));
+    }
+
+    @Test
+    public void testUrlsPage() {
+        JavalinTest.test(app, ((server, client) -> {
+            Url url1 = new Url(fistCorrectUrl, new Timestamp(System.currentTimeMillis()));
+            Url url2 = new Url(secondCorrectUrl, new Timestamp(System.currentTimeMillis()));
+            UrlRepository.save(url1);
+            UrlRepository.save(url2);
+            var response = client.get("/urls");
+            assertThat(response.code()).isEqualTo(200);
+            assertThat(response.body().string()).contains("hexlet").contains("github");
+            assertThat(UrlRepository.getUrls().size()).isEqualTo(2);
+        }));
+    }
+
+    @Test
+    public void testUrlPage() {
+        JavalinTest.test(app, (server, client) -> {
+            Url testUrl = new Url(secondCorrectUrl, new Timestamp(System.currentTimeMillis()));
+            UrlRepository.save(testUrl);
+            var response = client.get("/urls/1");
+            assertThat(response.code()).isEqualTo(200);
+            assertThat(response.body().string()).contains("github");
         });
     }
 

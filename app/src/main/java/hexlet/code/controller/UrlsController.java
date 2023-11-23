@@ -23,10 +23,10 @@ import java.util.Collections;
 
 public class UrlsController {
     public static void index(Context ctx) throws SQLException {
-        var urls = UrlRepository.getEntities();
+        var urls = UrlRepository.getUrls();
         var page = new UrlsPage(urls);
         page.setFlash(ctx.consumeSessionAttribute("flash"));
-        page.setColor(ctx.sessionAttribute("color"));
+        page.setColor(ctx.consumeSessionAttribute("color"));
         ctx.render("urls/index.jte", Collections.singletonMap("page", page));
     }
 
@@ -34,15 +34,17 @@ public class UrlsController {
         var id = ctx.pathParamAsClass("id", Long.class).getOrDefault(null);
         var url = UrlRepository.find(id)
                 .orElseThrow(() -> new NotFoundResponse("Url with id = " + id + " not found"));
-        var urlChecks = UrlCheckRepository.find(id);
+        var urlChecks = UrlCheckRepository.getUrlChecks(id);
         var page = new UrlPage(url, urlChecks);
+        page.setFlash(ctx.consumeSessionAttribute("flash"));
+        page.setColor(ctx.consumeSessionAttribute("color"));
         ctx.render("urls/show.jte", Collections.singletonMap("page", page));
     }
 
     public static void build(Context ctx) {
         var page = new BasePage();
-        page.setFlash(ctx.sessionAttribute("flash"));
-        page.setColor(ctx.sessionAttribute("color"));
+        page.setFlash(ctx.consumeSessionAttribute("flash"));
+        page.setColor(ctx.consumeSessionAttribute("color"));
         ctx.render("main.jte", Collections.singletonMap("page", page));
     }
 
@@ -62,7 +64,7 @@ public class UrlsController {
             var name = String.format("%s://%s", protocol, authority);
             var createdAt = new Timestamp(System.currentTimeMillis());
             var url = new Url(name, createdAt);
-            var uniqueness = UrlRepository.getEntities().stream()
+            var uniqueness = UrlRepository.getUrls().stream()
                     .noneMatch(entity -> entity.getName().equals(name));
             if (uniqueness) {
                 UrlRepository.save(url);

@@ -24,12 +24,12 @@ public class UrlCheckRepository extends BaseRepository {
             if (generatedKeys.next()) {
                 urlCheck.setId(generatedKeys.getLong(1));
             } else {
-                throw new SQLException("DB have not returned an id after saving an entity");
+                throw new SQLException("Database didn't return id after saving urlCheck");
             }
         }
     }
 
-    public static List<UrlCheck> find(Long urlId) throws SQLException {
+    public static List<UrlCheck> getUrlChecks(Long urlId) throws SQLException {
         var sql = "SELECT * FROM url_checks WHERE url_id = ?";
         try (var conn = dataSource.getConnection();
              var stmt = conn.prepareStatement(sql)) {
