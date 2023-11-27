@@ -22,7 +22,7 @@ import java.sql.Timestamp;
 import java.util.Collections;
 
 public class UrlsController {
-    public static void index(Context ctx) throws SQLException {
+    public static void showUrlList(Context ctx) throws SQLException {
         var urls = UrlRepository.getUrls();
         var page = new UrlsPage(urls);
         page.setFlash(ctx.consumeSessionAttribute("flash"));
@@ -30,9 +30,9 @@ public class UrlsController {
         ctx.render("urls/index.jte", Collections.singletonMap("page", page));
     }
 
-    public static void show(Context ctx) throws SQLException {
+    public static void showUrl(Context ctx) throws SQLException {
         var id = ctx.pathParamAsClass("id", Long.class).getOrDefault(null);
-        var url = UrlRepository.find(id)
+        var url = UrlRepository.findById(id)
                 .orElseThrow(() -> new NotFoundResponse("Url with id = " + id + " not found"));
         var urlChecks = UrlCheckRepository.getUrlChecks(id);
         var page = new UrlPage(url, urlChecks);
@@ -41,14 +41,14 @@ public class UrlsController {
         ctx.render("urls/show.jte", Collections.singletonMap("page", page));
     }
 
-    public static void build(Context ctx) {
+    public static void showMainPage(Context ctx) {
         var page = new BasePage();
         page.setFlash(ctx.consumeSessionAttribute("flash"));
         page.setColor(ctx.consumeSessionAttribute("color"));
         ctx.render("main.jte", Collections.singletonMap("page", page));
     }
 
-    public static void create(Context ctx) throws SQLException {
+    public static void createUrl(Context ctx) throws SQLException {
         var inputName = ctx.formParamAsClass("url", String.class).getOrDefault(null);
         URL inputUrl = null;
         try {
@@ -81,7 +81,7 @@ public class UrlsController {
 
     public static void makeCheck(Context ctx) throws SQLException {
         var urlId = ctx.pathParamAsClass("id", Long.class).getOrDefault(null);
-        var url = UrlRepository.find(urlId)
+        var url = UrlRepository.findById(urlId)
                 .orElseThrow(() -> new NotFoundResponse("Url with id = " + urlId + " not found"));
         String name = url.getName();
         try {

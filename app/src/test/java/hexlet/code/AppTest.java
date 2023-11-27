@@ -51,10 +51,11 @@ public final class AppTest {
         JavalinTest.test(app, ((server, client) -> {
             String requestBody = "url=" + fistCorrectUrl;
             var response = client.post("/urls", requestBody);
+            var urls = UrlRepository.getUrls();
             assertThat(response.code()).isEqualTo(200);
             assertThat(response.body().string()).contains("https://ru.hexlet.io");
-            assertThat(UrlRepository.getUrls().size()).isEqualTo(1);
-            assertThat(UrlRepository.getUrls().get(0).getName()).isEqualTo("https://ru.hexlet.io");
+            assertThat(urls.size()).isEqualTo(1);
+            assertThat(urls.get(0).getName()).isEqualTo("https://ru.hexlet.io");
         }));
     }
 

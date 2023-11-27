@@ -25,10 +25,10 @@ public class App {
         BaseRepository.dataSource = dataSource;
         var app = Javalin.create(config -> config.plugins.enableDevLogging());
         JavalinJte.init(Utils.createTemplateEngine());
-        app.get(NamedRoutes.mainPath(), UrlsController::build);
-        app.get(NamedRoutes.urlsPath(), UrlsController::index);
-        app.get(NamedRoutes.urlPath("{id}"), UrlsController::show);
-        app.post(NamedRoutes.urlsPath(), UrlsController::create);
+        app.get(NamedRoutes.mainPath(), UrlsController::showMainPage);
+        app.get(NamedRoutes.urlsPath(), UrlsController::showUrlList);
+        app.get(NamedRoutes.urlPath("{id}"), UrlsController::showUrl);
+        app.post(NamedRoutes.urlsPath(), UrlsController::createUrl);
         app.post(NamedRoutes.urlChecksPath("{id}"), UrlsController::makeCheck);
         return app;
     }
