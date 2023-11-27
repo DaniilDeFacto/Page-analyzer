@@ -2,6 +2,7 @@ package hexlet.code;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import hexlet.code.controller.UrlChecksController;
 import hexlet.code.controller.UrlsController;
 import hexlet.code.repository.BaseRepository;
 import io.javalin.Javalin;
@@ -29,7 +30,7 @@ public class App {
         app.get(NamedRoutes.urlsPath(), UrlsController::showUrlList);
         app.get(NamedRoutes.urlPath("{id}"), UrlsController::showUrl);
         app.post(NamedRoutes.urlsPath(), UrlsController::createUrl);
-        app.post(NamedRoutes.urlChecksPath("{id}"), UrlsController::makeCheck);
+        app.post(NamedRoutes.urlChecksPath("{id}"), UrlChecksController::makeCheck);
         return app;
     }
 
