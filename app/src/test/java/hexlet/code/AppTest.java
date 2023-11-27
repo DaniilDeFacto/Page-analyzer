@@ -52,11 +52,10 @@ public final class AppTest {
             String requestBody = "url=" + fistCorrectUrl;
             var response = client.post("/urls", requestBody);
             var urls = UrlRepository.getUrls();
-            var url = UrlRepository.findByName("https://ru.hexlet.io");
             assertThat(response.code()).isEqualTo(200);
             assertThat(response.body().string()).contains("https://ru.hexlet.io");
             assertThat(urls.size()).isEqualTo(1);
-            assertThat(url.isEmpty()).isFalse();
+            assertThat(urls.get(0).getName()).isEqualTo("https://ru.hexlet.io");
         }));
     }
 
