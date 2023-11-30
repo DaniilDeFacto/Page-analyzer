@@ -22,9 +22,9 @@ public class UrlsController {
         var urlsWithLastChecks = new HashMap<Url, UrlCheck>();
         var urls = UrlRepository.getUrls();
         for (var url : urls) {
-            var lastCheck = UrlCheckRepository.getLastCheck(url.getId()).isPresent()
-                    ? UrlCheckRepository.getLastCheck(url.getId()).get() : null;
-            urlsWithLastChecks.put(url, lastCheck);
+            UrlCheckRepository.getLastCheck(url.getId()).ifPresentOrElse(
+                            (check) -> urlsWithLastChecks.put(url, check),
+                            () -> urlsWithLastChecks.put(url, null));
         }
         var page = new UrlsPage(urlsWithLastChecks);
         page.setFlash(ctx.consumeSessionAttribute("flash"));
