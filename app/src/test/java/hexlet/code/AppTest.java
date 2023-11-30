@@ -1,12 +1,14 @@
 package hexlet.code;
 
 import hexlet.code.model.Url;
+import hexlet.code.repository.UrlCheckRepository;
 import hexlet.code.repository.UrlRepository;
 import io.javalin.Javalin;
 import io.javalin.testtools.JavalinTest;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,27 +16,29 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public final class AppTest {
     private static Javalin app;
-    private MockWebServer mockServer;
+    private static MockWebServer mockServer;
     private final String fistCorrectUrl = "https://ru.hexlet.io/programs/java";
     private final String secondCorrectUrl = "https://github.com/DaniilDeFacto/java-project-72";
     private final String incorrectUrl = "https//ru.hexlet.io/programs/java";
 
-    @BeforeEach
-    public void beforeEach() throws SQLException, IOException {
-        app = App.getApp();
+    @BeforeAll
+    public static void beforeAll() throws IOException {
         mockServer = new MockWebServer();
         mockServer.start();
     }
-    @AfterEach
-    public void afterEach() throws IOException {
+
+    @BeforeEach
+    public void beforeEach() throws SQLException {
+        app = App.getApp();
+    }
+    @AfterAll
+    public static void afterAll() throws IOException {
         mockServer.shutdown();
-        app.stop();
     }
 
     @Test
@@ -72,8 +76,8 @@ public final class AppTest {
     @Test
     public void testUrlsPage() {
         JavalinTest.test(app, ((server, client) -> {
-            Url url1 = new Url(fistCorrectUrl, new Timestamp(System.currentTimeMillis()));
-            Url url2 = new Url(secondCorrectUrl, new Timestamp(System.currentTimeMillis()));
+            Url url1 = new Url(fistCorrectUrl);
+            Url url2 = new Url(secondCorrectUrl);
             UrlRepository.save(url1);
             UrlRepository.save(url2);
             var response = client.get("/urls");
@@ -86,9 +90,9 @@ public final class AppTest {
     @Test
     public void testUrlPage() {
         JavalinTest.test(app, (server, client) -> {
-            Url testUrl = new Url(secondCorrectUrl, new Timestamp(System.currentTimeMillis()));
+            Url testUrl = new Url(secondCorrectUrl);
             UrlRepository.save(testUrl);
-            var response = client.get("/urls/1");
+            var response = client.get("/urls/" + testUrl.getId());
             assertThat(response.code()).isEqualTo(200);
             assertThat(response.body().string()).contains("github");
         });
@@ -108,13 +112,12 @@ public final class AppTest {
         MockResponse mockResponse = new MockResponse().setResponseCode(200).setBody(page);
         mockServer.enqueue(mockResponse);
         String urlString = mockServer.url("/").toString();
-        Url testUrl = new Url(urlString, new Timestamp(System.currentTimeMillis()));
+        Url testUrl = new Url(urlString);
         UrlRepository.save(testUrl);
         JavalinTest.test(app, (server, client) -> {
             var response = client.post("/urls/" + testUrl.getId() + "/checks");
             assertThat(response.code()).isEqualTo(200);
-            var lastCheck = testUrl.getLastCheck();
-            assertThat(lastCheck).isNotNull();
+            var lastCheck = UrlCheckRepository.getLastCheck(testUrl.getId()).get();
             assertThat(lastCheck.getStatusCode()).isEqualTo(200);
             assertThat(lastCheck.getTitle()).isEqualTo("Sample title");
             assertThat(lastCheck.getH1()).isEqualTo("Sample header");
