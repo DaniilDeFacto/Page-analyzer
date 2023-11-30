@@ -1,3 +1,4 @@
+@import hexlet.code.Utils
 @import hexlet.code.dto.urls.UrlPage
 @import hexlet.code.NamedRoutes
 @param UrlPage page
@@ -19,7 +20,7 @@
                     </tr>
                     <tr>
                         <td>Дата создания</td>
-                        <td>${page.getUrl().getCreatedAtToString()}</td>
+                        <td>${Utils.timeFormat(page.getUrl().getCreatedAt())}</td>
                     </tr>
                 </tbody>
             </table>
@@ -56,7 +57,7 @@
                                     ${urlCheck.getDescription()}
                                 </td>
                                 <td>
-                                    ${urlCheck.getCreatedAtToString()}
+                                    ${Utils.timeFormat(urlCheck.getCreatedAt())}
                                 </td>
                             </tr>
                         @endfor

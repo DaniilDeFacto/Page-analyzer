@@ -12,7 +12,6 @@ import kong.unirest.core.UnirestException;
 import org.jsoup.Jsoup;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
 
 public class UrlChecksController {
     public static void makeCheck(Context ctx) throws SQLException {
@@ -24,13 +23,12 @@ public class UrlChecksController {
             HttpResponse<String> response = Unirest.get(name).asString();
             var statusCode = response.getStatus();
             var document = Jsoup.parse(response.getBody());
-            var createdAt = new Timestamp(System.currentTimeMillis());
             var title = document.title().isEmpty() ? null : document.title();
             var h1Element = document.selectFirst("h1");
             var h1 = h1Element == null ? null : h1Element.ownText();
             var descriptionElement = document.selectFirst("meta[name=description]");
             var description = descriptionElement == null ? null : descriptionElement.attr("content");
-            var urlCheck = new UrlCheck(statusCode, title, h1, description, urlId, createdAt);
+            var urlCheck = new UrlCheck(statusCode, title, h1, description, urlId);
             UrlCheckRepository.save(urlCheck);
             ctx.sessionAttribute("flash", "Страница успешно проверена");
             ctx.sessionAttribute("color", "success");

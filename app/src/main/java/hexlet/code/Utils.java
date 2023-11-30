@@ -7,6 +7,8 @@ import gg.jte.resolve.ResourceCodeResolver;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 
 public class Utils {
@@ -39,5 +41,11 @@ public class Utils {
         ClassLoader classLoader = App.class.getClassLoader();
         ResourceCodeResolver codeResolver = new ResourceCodeResolver("templates", classLoader);
         return TemplateEngine.create(codeResolver, ContentType.Html);
+    }
+
+
+    public static String timeFormat(Timestamp createdAt) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        return formatter.format(createdAt.toLocalDateTime());
     }
 }

@@ -1,3 +1,4 @@
+@import hexlet.code.Utils
 @import hexlet.code.dto.urls.UrlsPage
 @import hexlet.code.NamedRoutes
 @param UrlsPage page
@@ -16,24 +17,25 @@
                         <th class="col-1">Код ответа</th>
                     </tr>
                 </thead>
-                @if(!page.getUrls().isEmpty())
+                @if(!page.getUrlsWithLastChecks().isEmpty())
                     <tbody>
-                        @for(var url : page.getUrls())
+                        @for(var urlWithCheck : page.getUrlsWithLastChecks().entrySet())
                             <tr>
                                 <td>
-                                    ${url.getId()}
+                                    ${urlWithCheck.getKey().getId()}
                                 </td>
                                 <td>
-                                    <a href="${NamedRoutes.urlPath(url.getId())}">${url.getName()}</a>
+                                    <a href="${NamedRoutes.urlPath(urlWithCheck.getKey().getId())}">
+                                        ${urlWithCheck.getKey().getName()}</a>
                                 </td>
                                 <td>
-                                    @if(url.getLastCheck() != null)
-                                        ${url.getLastCheck().getCreatedAtToString()}
+                                    @if(urlWithCheck.getValue() != null)
+                                        ${Utils.timeFormat(urlWithCheck.getValue().getCreatedAt())}
                                     @endif
                                 </td>
                                 <td>
-                                    @if(url.getLastCheck() != null)
-                                        ${url.getLastCheck().getStatusCode()}
+                                    @if(urlWithCheck.getValue() != null)
+                                        ${urlWithCheck.getValue().getStatusCode()}
                                     @endif
                                 </td>
                             </tr>
